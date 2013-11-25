@@ -3,6 +3,8 @@ var colors = require('colors');
 var SerialPort = require("serialport");
 var Serialport = require("serialport").SerialPort;
 
+var handshakeInterval;
+
 // new serial port instance
 var serialPort = new Serialport("/dev/tty.usbmodem1421", {
     baudrate: 115200,
@@ -50,7 +52,7 @@ function reconnect(){
 }
 
 function doHandshake(){
-    setTimeout(function(){
+    handshakeInterval = setInterval(function(){
         serialPort.write(String.fromCharCode(10), function(err, results){
             if(err){
                 console.log('error sending handshake request: '.red + err);
@@ -60,7 +62,7 @@ function doHandshake(){
                 console.log('results: ' + results);
             }
         });
-    }, 2000);
+    }, 100);
 }
 
 function handleConnection(callback){
@@ -102,6 +104,7 @@ function handleConnection(callback){
             if(parseInt(data, 10) == 1234567890){
                 console.log('got handshake confirmation'.green);
                 handshake = true;
+                clearInterval(handshakeInterval);
             }
         });
 
