@@ -1,0 +1,12 @@
+{
+  "name": "serialread",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "node serialread.js"
+  },
+  "dependencies": {
+    "serialport": "*",
+    "colors": "*"
+  }
+}
